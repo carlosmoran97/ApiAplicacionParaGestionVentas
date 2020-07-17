@@ -1,2 +1,2 @@
-# ApiAplicaci-nParaGestionVentas
+# ApiAplicacionParaGestionVentas
 Repositorio de API para Aplicación Móvil de Gestión de Ventas
