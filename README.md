@@ -5,6 +5,7 @@ Repositorio de API para Aplicación Móvil de Gestión de Ventas
 --Postgresql 12.3
 --PgAdmin 4
 
+--Servidor: GestionSQL
 --Usuario: Administrador
 --Contraseña: LaConfianza
 
