@@ -33,6 +33,10 @@ namespace backend
             //ACA HACEMOS LA CONEXION DE BASES DE DATOS EN STARTUP
             services.AddDbContext<GestionVentasBDContext>(options
                  => options.UseNpgsql(Configuration.GetConnectionString("DevConnection")));
+            services.AddCors(options => options.AddPolicy("AllowWebAPP",
+                builder => builder.AllowAnyOrigin()
+                                  .AllowAnyHeader()
+                                  .AllowAnyMethod()));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -59,6 +63,8 @@ namespace backend
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("AllowWepApp");
 
             app.UseHttpsRedirection();
 
