@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>backend</name>
+    </assembly>
+    <members>
+        <member name="M:backend.Controllers.CategoriasController.GetProductoPaginado(System.Int32,System.Int32)">
+            <summary>
+            GET para obtener categorias paginadas
+            </summary>
+            <param name="page"></param>
+            <param name="quantity"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
