@@ -4,9 +4,18 @@
         <name>backend</name>
     </assembly>
     <members>
-        <member name="M:backend.Controllers.CategoriasController.GetProductoPaginado(System.Int32,System.Int32)">
+        <member name="M:backend.Controllers.CategoriasController.GetCategoriaPaginado(System.Int32,System.Int32)">
             <summary>
-            GET para obtener categorias paginadas
+            GET para obtener productos paginadas
+            Enviar parámetros para paginar, sin parámetros para obtener el listado completo
+            </summary>
+            <param name="page">No obligatorio, cantidad de elementos a saltar</param>
+            <param name="quantity">No obligatorio, cantidad de elementos a mostrar</param>
+            <returns></returns>
+        </member>
+        <member name="M:backend.Controllers.ProductosController.GetProductoPaginado(System.Int32,System.Int32)">
+            <summary>
+            
             </summary>
             <param name="page"></param>
             <param name="quantity"></param>

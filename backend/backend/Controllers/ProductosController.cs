@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using backend;
+using System.IO;
 
 namespace backend.Controllers
 {
@@ -21,11 +22,11 @@ namespace backend.Controllers
         }
 
         // GET: api/Producto
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Producto>>> GetProducto()
-        {
-            return await _context.Producto.ToListAsync();
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Producto>>> GetProducto()
+        //{
+        //    return await _context.Producto.ToListAsync();
+        //}
 
         
         // GET: api/Producto/5
@@ -80,8 +81,20 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Producto>> PostProducto(Producto producto)
         {
+            
+            //Agregando imagen a carpeta
+            string filtePath = Path.GetFullPath(@"Images");
+            //string nombreImagen = producto.Nombre.Replace(" ", "");
+            Guid nombreImagen = Guid.NewGuid();
+            string rutaImagen = filtePath + "\\" +  nombreImagen + ".png";
+            string imagenBase = producto.Imagen.Remove(0,22);
+            byte[] archivoBase64 = Convert.FromBase64String(imagenBase);
+            System.IO.File.WriteAllBytes(rutaImagen, archivoBase64);
+
+            producto.Imagen = "/Images/" + nombreImagen + ".png";
             _context.Producto.Add(producto);
             await _context.SaveChangesAsync();
+            
 
             return CreatedAtAction("GetProducto", new { id = producto.Id }, producto);
         }
@@ -107,12 +120,26 @@ namespace backend.Controllers
             return _context.Producto.Any(e => e.Id == id);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
         // GET: api/Productos/Paginado/1&10
-        [HttpGet("{page}/{quantity}")]
-        public async Task<ActionResult<IEnumerable<Producto>>> GetProductoPaginado(int page, int quantity)
+        [HttpGet()]
+        public async Task<ActionResult<IEnumerable<Producto>>> GetProductoPaginado([FromQuery(Name = "page")] int page, [FromQuery(Name = "quantity")] int quantity)
         {
-            var producto = await _context.Producto.Skip((page - 1) * quantity).Take(quantity).ToListAsync();
-
+            List<Producto> producto; //= await _context.Producto.Skip((page - 1) * quantity).Take(quantity).ToListAsync();
+            
+            if (page != 0 && quantity != 0)
+            {
+                producto = await _context.Producto.Skip((page - 1) * quantity).Take(quantity).ToListAsync();
+            }
+            else
+            {
+                producto = await _context.Producto.ToListAsync();
+            }
             if (producto == null)
             {
                 return NotFound();

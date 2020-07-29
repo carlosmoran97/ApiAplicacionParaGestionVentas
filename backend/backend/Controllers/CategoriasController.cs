@@ -22,11 +22,11 @@ namespace backend.Controllers
 
         
         // GET: api/Categorias
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoria()
-        {
-            return await _context.Categoria.ToListAsync();
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoria()
+        //{
+        //    return await _context.Categoria.ToListAsync();
+        //}
 
         // GET: api/Categorias/5
         [HttpGet("{id}")]
@@ -108,20 +108,24 @@ namespace backend.Controllers
         }
 
         /// <summary>
-        /// GET para obtener categorias paginadas
+        /// GET para obtener productos paginadas
+        /// Enviar parámetros para paginar, sin parámetros para obtener el listado completo
         /// </summary>
-        /// <param name="page"></param>
-        /// <param name="quantity"></param>
+        /// <param name="page">No obligatorio, cantidad de elementos a saltar</param>
+        /// <param name="quantity">No obligatorio, cantidad de elementos a mostrar</param>
         /// <returns></returns>
-        // GET: api/Categorias/Paginado/1&10
-        [HttpGet("paginado/{page}/{quantity}")]
-        public async Task<ActionResult<IEnumerable<Categoria>>> GetProductoPaginado(int page, int quantity)
+        // GET: api/Categorias?page=1&quantity=2
+        [HttpGet()]
+        public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoriaPaginado([FromQuery(Name = "page")] int page, [FromQuery(Name = "quantity")] int quantity)
         {
-            var categoria = await _context.Categoria.Skip((page - 1) * quantity).Take(quantity).ToListAsync();
+            List<Categoria> categoria; //= await _context.Categoria.Skip((page - 1) * quantity).Take(quantity).ToListAsync();
 
-            if (categoria == null)
+            if (page != 0 && quantity != 0)
             {
-                return NotFound();
+                categoria = await _context.Categoria.Skip((page - 1) * quantity).Take(quantity).ToListAsync();
+            }
+            else {
+                categoria = await _context.Categoria.ToListAsync();
             }
 
             return categoria;
